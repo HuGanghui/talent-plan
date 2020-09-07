@@ -1,0 +1,12 @@
+# IDEA project files
+.idea/
+
+# Temp files
+*~
+
+# Java Virtual machine crash logs
+hs_err_pid*
+replay_pid*
+
+# Apple MacOS hidden file
+.DS_Store
