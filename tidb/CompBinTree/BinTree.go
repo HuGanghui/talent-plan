@@ -1,9 +1,7 @@
 package CompBinTree
 
 type BinTree interface {
-	getRoot() BinTreePositon
+	getRoot() BinTreePosition
 	isEmpty() bool
 	getSize() int64
 }
-
-

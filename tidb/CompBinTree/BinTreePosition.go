@@ -1,10 +1,10 @@
 package CompBinTree
 
-type BinTreePositon interface {
+type BinTreePosition interface {
 	hasParent() bool
-	getParent() *BinTreePositon
-	getLChild() *BinTreePositon
-	getRChild() *BinTreePositon
+	getParent() BinTreePosition
+	getLChild() BinTreePosition
+	getRChild() BinTreePosition
 	getElem() *Entry
 	setElem(*Entry)
 }
