@@ -1,12 +1,12 @@
 package CompBinTree
 
 type CompBinTreeNode struct {
-	T [] BinTreePosition
+	T []BinTreePosition
 	rank int64
 	ele *Entry
 }
 
-func NewCompBinTreeNode(T []BinTreePosition, entry *Entry) *CompBinTreeNode{
+func NewCompBinTreeNode(T []BinTreePosition, entry *Entry) BinTreePosition {
 	node := &CompBinTreeNode{
 		T:    T,
 		rank: int64(len(T)),
