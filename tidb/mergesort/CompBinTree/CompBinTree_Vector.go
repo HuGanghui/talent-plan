@@ -5,7 +5,7 @@ type CompBinTree_Vector struct {
 }
 
 func NewCompBinTree_Vector(entrys []*Entry) *CompBinTree_Vector {
-	temp := make([]BinTreePosition, 0)
+	temp := make([]BinTreePosition, 0, len(entrys))
 	var compBinTree = &CompBinTree_Vector{
 		T: &temp,
 	}

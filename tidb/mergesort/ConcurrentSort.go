@@ -5,30 +5,35 @@ import (
 	"sort"
 )
 
-func ConcurrentSort(src []int64)  {
+func ConcurrentSort(src []int64) []int {
 	taskNum := runtime.NumCPU()
 	start := 0
 	count := 1
-	array_length := len(src)
-	step := array_length / taskNum
-	chs := make([]chan int, taskNum)
-	interval := make([]int, 0)
-	interval = append(interval, start)
-	for ; start < array_length; {
-		end := start + step
-		if taskNum == count {
-			end = array_length
+	arrayLength := len(src)
+	interval := make([]int, 0, taskNum+1)
+	if arrayLength < 4 {
+		SortDefault(src)
+		interval = nil
+	} else {
+		step := arrayLength / taskNum
+		chs := make([]chan int, taskNum)
+		interval = append(interval, start)
+		for ; start < arrayLength; {
+			end := start + step
+			if taskNum == count {
+				end = arrayLength
+			}
+			interval = append(interval, end)
+			chs[count-1] = make(chan int)
+			go Sort(src[start:end], chs[count-1])
+			start = end
+			count++
 		}
-		interval = append(interval, end)
-		chs[count-1] = make(chan int)
-		go Sort(src[start:end], chs[count-1])
-		start = end
-		count++
+		for _, ch := range chs {
+			<-ch
+		}
 	}
-	for _, ch := range chs {
-		<-ch
-	}
-	Sort2(src)
+	return interval
 }
 
 func Sort(src []int64, succ chan int) {
@@ -38,7 +43,7 @@ func Sort(src []int64, succ chan int) {
 	succ <- 1
 }
 
-func Sort2(src []int64) {
+func SortDefault(src []int64) {
 	sort.Slice(src, func(i, j int) bool {
 		return src[i] < src[j]
 	})
