@@ -1,7 +1,7 @@
 package CompBinTree
 
 type CompBinTree interface {
-	addLast(ele int64) BinTreePosition
-	delLast()
-	posOfNode(i int64) BinTreePosition
+	AddLast(entry *Entry) BinTreePosition
+	DelLast() BinTreePosition
+	PosOfNode(i int64) BinTreePosition
 }

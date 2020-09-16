@@ -1,28 +1,29 @@
 package CompBinTree
 
 type CompBinTree_Vector struct {
-	T []BinTreePosition
+	T *[]BinTreePosition
 }
 
-func NewCompBinTree_Vector(s []int64) CompBinTree {
+func NewCompBinTree_Vector(entrys []*Entry) *CompBinTree_Vector {
+	temp := make([]BinTreePosition, 0)
 	var compBinTree = &CompBinTree_Vector{
-		T: make([]BinTreePosition, 0),
+		T: &temp,
 	}
-	if nil != s {
-		for i := 0; i < len(s); i++ {
-			compBinTree.addLast(s[i])
+	if nil != entrys {
+		for i := 0; i < len(entrys); i++ {
+			compBinTree.AddLast(entrys[i])
 		}
 	}
 	return compBinTree
 }
 
-func (tree *CompBinTree_Vector) getRoot() BinTreePosition {
-	return tree.T[0]
+func (tree *CompBinTree_Vector) GetRoot() BinTreePosition {
+	return (*tree.T)[0]
 }
 
-func (tree *CompBinTree_Vector) isEmpty() bool {
+func (tree *CompBinTree_Vector) IsEmpty() bool {
 	var result bool
-	if len(tree.T) == 0 {
+	if len(*tree.T) == 0 {
 		result = true
 	} else {
 		result = false
@@ -30,23 +31,21 @@ func (tree *CompBinTree_Vector) isEmpty() bool {
 	return result
 }
 
-func (tree *CompBinTree_Vector) getSize() int64 {
-	return int64(len(tree.T))
+func (tree *CompBinTree_Vector) GetSize() int64 {
+	return int64(len(*tree.T))
 }
 
-func (tree *CompBinTree_Vector) addLast(ele int64) BinTreePosition {
-	entry := &Entry{
-		key:   ele,
-		value: ele,
-	}
+func (tree *CompBinTree_Vector) AddLast(entry *Entry) BinTreePosition {
 	node := NewCompBinTreeNode(tree.T, entry)
 	return node
 }
 
-func (tree *CompBinTree_Vector) delLast() {
-	tree.T = tree.T[:len(tree.T)-1]
+func (tree *CompBinTree_Vector) DelLast() BinTreePosition {
+	lastEntry := (*tree.T)[len(*tree.T)-1]
+	*tree.T = (*tree.T)[:len(*tree.T)-1]
+	return lastEntry
 }
 
-func (tree *CompBinTree_Vector) posOfNode(index int64) BinTreePosition {
-	return tree.T[index]
+func (tree *CompBinTree_Vector) PosOfNode(index int64) BinTreePosition {
+	return (*tree.T)[index]
 }
