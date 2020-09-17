@@ -17,7 +17,7 @@ type PQueue_Heap struct {
 	comp Comparator
 }
 
-func NewPQueue_Heap(c Comparator, entrys []*CompBinTree.Entry) PQueue {
+func NewPQueue_Heap(c Comparator, entrys []*CompBinTree.Entry) *PQueue_Heap {
 	heap := CompBinTree.NewCompBinTree_Vector(entrys)
 	pqueue := &PQueue_Heap{
 		heap: heap,
@@ -58,6 +58,18 @@ func (heap *PQueue_Heap) DelMin() *CompBinTree.Entry{
 		heap.percolateDown(heap.heap.GetRoot())
 	}
 	return min
+}
+
+func (heap *PQueue_Heap) GetRoot() *CompBinTree.Entry {
+	if heap.IsEmpty() {
+		return nil
+	}
+	return heap.heap.GetRoot().GetElem()
+}
+
+func (heap *PQueue_Heap) ReplaceRoot(entry *CompBinTree.Entry) {
+	heap.heap.GetRoot().SetElem(entry)
+	heap.percolateDown(heap.heap.GetRoot())
 }
 
 func (heap *PQueue_Heap) swapParentChild(u CompBinTree.BinTreePosition,

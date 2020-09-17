@@ -5,13 +5,13 @@ import (
 	"sort"
 )
 
-func ConcurrentSort(src []int64) []int {
-	taskNum := runtime.NumCPU()
+func ConcurrentSort(src []int64) (interval []int, taskNum int) {
+	taskNum = runtime.NumCPU()
 	start := 0
 	count := 1
 	arrayLength := len(src)
-	interval := make([]int, 0, taskNum+1)
-	if arrayLength < 4 {
+	interval = make([]int, 0, taskNum+1)
+	if arrayLength < taskNum * 2 {
 		SortDefault(src)
 		interval = nil
 	} else {
@@ -33,7 +33,7 @@ func ConcurrentSort(src []int64) []int {
 			<-ch
 		}
 	}
-	return interval
+	return interval, taskNum
 }
 
 func Sort(src []int64, succ chan int) {
