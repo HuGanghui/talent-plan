@@ -14,20 +14,24 @@ func MergeSort(src []int64) {
 	if intervalSlice == nil {
 		return
 	}
+	result := heapMerge(src, taskNum, intervalSlice)
+	src = result
+}
 
-	initEntrySlice := make([]*CompBinTree.Entry, 0, taskNum)
-	sliceArray := make([]*CompBinTree.SortedSlice, 0, taskNum)
-	for i:= 0; i<taskNum; i++  {
-		sortedSlice := CompBinTree.NewSortedSlice(src[intervalSlice[i]: intervalSlice[i+1]])
-		sliceArray = append(sliceArray, sortedSlice)
-		var entry = CompBinTree.NewEntry(sortedSlice.Value(), sortedSlice)
-		initEntrySlice = append(initEntrySlice, entry)
-	}
+ func heapMerge(src []int64, taskNum int, intervalSlice []int) []int64 {
+	 initEntrySlice := make([]*CompBinTree.Entry, 0, taskNum)
+	 sliceArray := make([]*CompBinTree.SortedSlice, 0, taskNum)
+	 for i:= 0; i<taskNum; i++  {
+		 sortedSlice := CompBinTree.NewSortedSlice(src[intervalSlice[i]: intervalSlice[i+1]])
+		 sliceArray = append(sliceArray, sortedSlice)
+		 var entry = CompBinTree.NewEntry(sortedSlice.Value(), sortedSlice)
+		 initEntrySlice = append(initEntrySlice, entry)
+	 }
 
 	comp := &PQueue_Heap.Comparator_default{}
 	heap := PQueue_Heap.NewPQueue_Heap(comp, initEntrySlice)
 	result := make([]int64, 0, len(src))
-	for i:= 0; stopSignal(sliceArray, intervalSlice, taskNum); i++ {
+	for i:= 0; stopSignal(sliceArray, taskNum); i++ {
 		delMin := heap.AutoChangeRoot()
 		result = append(result, delMin)
 		// 打印小样例，方便测试
@@ -38,12 +42,10 @@ func MergeSort(src []int64) {
 		result = append(result, delMin)
 		//fmt.Println(delMin)
 	}
-	for i:=0; i<len(src); i++ {
-		src[i] = result[i]
-	}
+	return result
  }
 
- func stopSignal(sliceArray []*CompBinTree.SortedSlice, intervalSlice []int, taskNum int) bool {
+ func stopSignal(sliceArray []*CompBinTree.SortedSlice, taskNum int) bool {
  	var result = false
 	for i:= 0; i < taskNum; i++{
 		result = result || sliceArray[i].HasNext()
