@@ -5,13 +5,15 @@ import (
 	"sort"
 )
 
+const SortingArrayThreshold = 1 << 9
+
 func ConcurrentSort(src []int64) (interval []int, taskNum int) {
 	taskNum = runtime.NumCPU()
 	start := 0
 	count := 1
 	arrayLength := len(src)
 	interval = make([]int, 0, taskNum+1)
-	if arrayLength < taskNum * 2 {
+	if arrayLength < SortingArrayThreshold {
 		SortDefault(src)
 		interval = nil
 	} else {

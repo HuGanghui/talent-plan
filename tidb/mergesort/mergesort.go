@@ -10,7 +10,7 @@ import (
 // Please supplement this function to accomplish the home work.
 func MergeSort(src []int64) {
 	intervalSlice, taskNum:= ConcurrentSort(src)
-	// 当src元素小于4个，就使用内置的快排算法
+	// 当src元素小于默认阈值，就使用内置的快排算法
 	if intervalSlice == nil {
 		return
 	}
