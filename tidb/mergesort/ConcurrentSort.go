@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-const SortingArrayThreshold = 1 << 9
+const SortingArrayThreshold = 9
 
 func ConcurrentSort(src []int64) (interval []int, taskNum int) {
 	taskNum = runtime.NumCPU()

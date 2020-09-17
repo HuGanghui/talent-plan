@@ -1,22 +1,22 @@
 package CompBinTree
 
 type Entry struct{
-	value int64
-	key int64
+	value *SortedSlice
+	key   int64
 }
 
-func NewEntry(key int64, value int64) *Entry {
+func NewEntry(key int64, value *SortedSlice) *Entry {
 	return &Entry{
 		value: value,
 		key:   key,
 	}
 }
 
-func (entry *Entry) GetValue() int64 {
+func (entry *Entry) GetValue() *SortedSlice {
 	return entry.value
 }
 
-func (entry *Entry) SetValue(value int64) {
+func (entry *Entry) SetValue(value *SortedSlice) {
 	entry.value = value
 }
 

@@ -67,6 +67,20 @@ func (heap *PQueue_Heap) GetRoot() *CompBinTree.Entry {
 	return heap.heap.GetRoot().GetElem()
 }
 
+func (heap *PQueue_Heap) AutoChangeRoot() int64 {
+	ele := heap.heap.GetRoot().GetElem()
+	rootValue := ele.GetKey()
+	sortedSlice := ele.GetValue()
+	if sortedSlice.HasNext() {
+		sortedSlice.Next()
+		ele.SetKey(sortedSlice.Value())
+		heap.percolateDown(heap.heap.GetRoot())
+	} else {
+		heap.DelMin()
+	}
+	return rootValue
+}
+
 func (heap *PQueue_Heap) ReplaceRoot(entry *CompBinTree.Entry) {
 	heap.heap.GetRoot().SetElem(entry)
 	heap.percolateDown(heap.heap.GetRoot())

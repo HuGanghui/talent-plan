@@ -15,49 +15,41 @@ func MergeSort(src []int64) {
 		return
 	}
 
-	pointSlice := make([]int, 0, taskNum)
 	initEntrySlice := make([]*CompBinTree.Entry, 0, taskNum)
+	sliceArray := make([]*CompBinTree.SortedSlice, 0, taskNum)
 	for i:= 0; i<taskNum; i++  {
-		pointSlice = append(pointSlice, intervalSlice[i])
-		var entry = CompBinTree.NewEntry(src[pointSlice[i]], int64(i))
+		sortedSlice := CompBinTree.NewSortedSlice(src[intervalSlice[i]: intervalSlice[i+1]])
+		sliceArray = append(sliceArray, sortedSlice)
+		var entry = CompBinTree.NewEntry(sortedSlice.Value(), sortedSlice)
 		initEntrySlice = append(initEntrySlice, entry)
 	}
 
 	comp := &PQueue_Heap.Comparator_default{}
 	heap := PQueue_Heap.NewPQueue_Heap(comp, initEntrySlice)
 	result := make([]int64, 0, len(src))
-	for i:= 0; !stopSignal(pointSlice, intervalSlice, taskNum); i++ {
-		//delMin := heap.DelMin()
-		delMin := heap.GetRoot()
-		result = append(result, delMin.GetKey())
-		insert(heap, src, pointSlice, intervalSlice, delMin)
+	for i:= 0; stopSignal(sliceArray, intervalSlice, taskNum); i++ {
+		delMin := heap.AutoChangeRoot()
+		result = append(result, delMin)
 		// 打印小样例，方便测试
 		//fmt.Println(result[i])
+	}
+	for ; !heap.IsEmpty(); {
+		delMin := heap.DelMin().GetKey()
+		result = append(result, delMin)
+		//fmt.Println(delMin)
 	}
 	for i:=0; i<len(src); i++ {
 		src[i] = result[i]
 	}
  }
 
- func stopSignal(pointSlice []int, intervalSlice []int, taskNum int) bool {
- 	var result = true
+ func stopSignal(sliceArray []*CompBinTree.SortedSlice, intervalSlice []int, taskNum int) bool {
+ 	var result = false
 	for i:= 0; i < taskNum; i++{
-		result = result && pointSlice[i] >= intervalSlice[i+1]
+		result = result || sliceArray[i].HasNext()
 	}
 	return result
  }
-
-func insert(heap *PQueue_Heap.PQueue_Heap, src []int64,
-	pointSlice []int, intervalSlice []int, entry *CompBinTree.Entry)  {
-	index := entry.GetValue()
-	pointSlice[index]++
-	if pointSlice[index] < intervalSlice[index+1] {
-		var entry = CompBinTree.NewEntry(src[pointSlice[index]], index)
-		heap.ReplaceRoot(entry)
-	} else {
-		heap.DelMin()
-	}
-}
 
 func main() {
 	// 小样例，方便测试
