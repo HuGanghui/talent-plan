@@ -15,7 +15,9 @@ func MergeSort(src []int64) {
 		return
 	}
 	result := heapMerge(src, taskNum, intervalSlice)
-	src = result
+	for i := 0; i < len(result); i++  {
+		src[i] = result[i]
+	}
 }
 
  func heapMerge(src []int64, taskNum int, intervalSlice []int) []int64 {
